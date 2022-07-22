@@ -1,0 +1,26 @@
+## Create User
+POST http://localhost:3000/auth/signup
+content-type: application/json
+
+{
+  "email": "ema22issl@example.com",
+  "password": "password"
+}
+
+### GET one user
+GET http://localhost:3000/auth/7
+
+### GET by email
+GET http://localhost:3000/auth/?email=ema22issl@example.com
+
+### REMOVE user
+DELETE http://localhost:3000/auth/3123123123
+
+### UPDATE user
+PATCH http://localhost:3000/auth/6
+content-type: application/json
+
+{
+  "email": "pedo@example.com"
+}
+

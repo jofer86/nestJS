@@ -9,6 +9,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+
+import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -18,7 +20,10 @@ import { UsersService } from './users.service';
 @Controller('auth')
 @Serialize(UserDto)
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private authService: AuthService,
+  ) {}
 
   @Get('/:id')
   async findOne(@Param('id') id: number) {
@@ -34,9 +39,8 @@ export class UsersController {
 
   @Post('/signup')
   createUSer(@Body() body: CreateUserDto) {
-    const email = body.email;
-    const password = body.password;
-    return this.userService.create(email, password);
+    const { email, password } = body;
+    return this.authService.signup(email, password);
   }
 
   @Delete('/:id')

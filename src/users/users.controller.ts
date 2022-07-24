@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Session,
   Query,
 } from '@nestjs/common';
 
@@ -27,6 +28,7 @@ export class UsersController {
 
   @Get('/:id')
   async findOne(@Param('id') id: number) {
+    console.log('getting color')
     const user = await this.userService.findOne(id);
     if (!user) throw new NotFoundException('user not found');
     return user;
@@ -38,9 +40,18 @@ export class UsersController {
   }
 
   @Post('/signup')
-  createUSer(@Body() body: CreateUserDto) {
+  async createUSer(@Body() body: CreateUserDto, @Session() session: any) {
     const { email, password } = body;
-    return this.authService.signup(email, password);
+    const user = await this.authService.signup(email, password);
+    session.userId  = user.id;
+    return user;
+  }
+
+  @Post('/signin')
+  async signin(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.authService.signin(body.email, body.password);
+    session.userId = user.id;
+    return user;
   }
 
   @Delete('/:id')
@@ -52,4 +63,6 @@ export class UsersController {
   updateUser(@Param('id') id: number, @Body() body: UpdateUserDto) {
     return this.userService.update(id, body);
   }
+
+
 }

@@ -1,11 +1,22 @@
-## Create User
+## Sign up
 POST http://localhost:3000/auth/signup
 content-type: application/json
 
 {
-  "email": "jorsgel@example.com",
+  "email": "exxsx@example.com",
   "password": "password"
 }
+
+
+### Sign in
+POST http://localhost:3000/auth/signin
+content-type: application/json
+
+{
+  "email": "exxsx@example.com",
+  "password": "password"
+}
+
 
 ### GET one user
 GET http://localhost:3000/auth/7
@@ -23,4 +34,15 @@ content-type: application/json
 {
   "email": "pedo@example.com"
 }
+
+
+### Sign In
+POST http://localhost:3000/auth/signin
+content-type: application/json
+
+{
+  "email": "jorssgel@example.com",
+  "password": "password"
+}
+
 

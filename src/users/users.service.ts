@@ -18,6 +18,7 @@ export class UsersService {
   }
 
   findOne(id) {
+    if (!id) return null;
     return this.repo.findOneBy({ id });
   }
 

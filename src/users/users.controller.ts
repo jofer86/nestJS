@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Session,
+  UseGuards,
   Query,
 } from '@nestjs/common';
 
@@ -17,6 +18,8 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -26,9 +29,14 @@ export class UsersController {
     private authService: AuthService,
   ) {}
 
+  @Get('/whoami')
+  @UseGuards(AuthGuard)
+  whoAmI(@CurrentUser() user: string) {
+    return user;
+  }
+
   @Get('/:id')
   async findOne(@Param('id') id: number) {
-    console.log('getting color')
     const user = await this.userService.findOne(id);
     if (!user) throw new NotFoundException('user not found');
     return user;
@@ -38,6 +46,12 @@ export class UsersController {
   findAllUsers(@Query('email') email: string) {
     return this.userService.find(email);
   }
+
+  @Post('/signout')
+  signOut(@Session() session: any) {
+    session.userId = null;
+  }
+
 
   @Post('/signup')
   async createUSer(@Body() body: CreateUserDto, @Session() session: any) {
@@ -63,6 +77,4 @@ export class UsersController {
   updateUser(@Param('id') id: number, @Body() body: UpdateUserDto) {
     return this.userService.update(id, body);
   }
-
-
 }

@@ -21,6 +21,12 @@ content-type: application/json
 ### GET one user
 GET http://localhost:3000/auth/7
 
+### WHOAMI
+GET http://localhost:3000/auth/whoami
+
+### POST signout
+POST http://localhost:3000/auth/signout
+
 ### GET by email
 GET http://localhost:3000/auth/?email=ema22issl@example.com
 

@@ -69,11 +69,13 @@ export class UsersController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard)
   deleteUser(@Param('id') id: number) {
     return this.userService.remove(id);
   }
 
   @Patch('/:id')
+  @UseGuards(AuthGuard)
   updateUser(@Param('id') id: number, @Body() body: UpdateUserDto) {
     return this.userService.update(id, body);
   }
